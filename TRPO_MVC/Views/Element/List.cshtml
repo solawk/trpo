@@ -1,0 +1,13 @@
+﻿@model List<TRPO_MVC.Models.ElementModel>
+@{
+    ViewData["Title"] = "Elements List";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Elements List</h1>
+
+    @foreach (var el in this.Model)
+    {
+        <div><b>@el.ID</b> - @el.ParsedData["name"]</div>
+    }
+</div>
