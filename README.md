@@ -2,7 +2,7 @@
 Back-end: Microsoft ASP.NET Core 6 + SQL Server 13 + Entity Framework + Razor
 
 ## TRPO_DM - Доменная модель
-Содержит модели как части онтологии:
+Содержит модели:
 ### Element (Элемент)
 - ID: автоматически назначаемый идентификатор в БД SQL
 - Data: Данные об элементе в формате JSON
