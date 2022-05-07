@@ -1,6 +1,11 @@
 # ТРПО
 Back-end: Microsoft ASP.NET Core 6 + SQL Server 13 + Entity Framework + Razor
 
+## Чтобы запустить приложение:
+1. Собрать в Visual Studio;
+2. Запустить TRPO_API.exe в TRPO_API/bin/Debug/net6.0;
+3. Запустить TRPO_MVC в Visual Studio. Можно и аналогично API, но не подключатся библиотеки, что надо бы пофиксить, ибо страница их ищет по localhost:7001 вместо папок проекта.
+
 ## TRPO_DM - Доменная модель
 Содержит модели:
 ### Element (Элемент)
