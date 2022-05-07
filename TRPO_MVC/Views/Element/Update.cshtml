@@ -1,0 +1,17 @@
+﻿@model TRPO_MVC.Models.ElementModel
+@{
+	ViewData["Title"] = "Update Element";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Update Element</h1>
+
+    <form method="post">
+        <input hidden required type="number" name="id" value="@this.Model.ID"/>
+        Name: <input required type="text" name="name" value="@this.Model.Name"/><br />
+        Category ID: <input required type="number" name="catid" value="@this.Model.Category.ID"/><br />
+        Data: <input type="text" name="data" value="@this.Model.Data"/><br />
+        Image URI: <input type="text" name="image" value="@this.Model.ImageURI"/><br />
+        <input type="submit" value="Submit" />
+    </form>
+</div>

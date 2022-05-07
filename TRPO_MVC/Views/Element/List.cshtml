@@ -8,6 +8,9 @@
 
     @foreach (var el in this.Model)
     {
-        <div><b>@el.ID</b> - @el.ParsedData["name"]</div>
+        <div>@el.ID -- @el.Name: 
+            <a asp-area="" asp-controller="Element" asp-action="Read" asp-route-id="@el.ID">Read</a> 
+            <a asp-area="" asp-controller="Element" asp-action="Update" asp-route-id="@el.ID">Update</a>
+        </div>
     }
 </div>

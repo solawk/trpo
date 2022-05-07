@@ -1,0 +1,12 @@
+﻿@model TRPO_MVC.Models.CategoryModel
+@{
+    ViewData["Title"] = "Read Category";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Read Category @this.Model.Name</h1>
+
+	ID: @this.Model.ID<br />
+	Name: @this.Model.Name<br />
+	Parent ID: @this.Model.ParentID<br />
+</div>

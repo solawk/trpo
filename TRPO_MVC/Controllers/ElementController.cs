@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TRPO_MVC.Services;
+using TRPO_MVC.Models.Out;
 
 namespace TRPO_MVC.Controllers
 {
@@ -12,80 +13,75 @@ namespace TRPO_MVC.Controllers
         {
             elementService = service;
         }
-
-        // GET: ElementController
         public async Task<IActionResult> List()
         {
             return View(await elementService.GetAllElements());
         }
 
-        // GET: ElementController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            return View();
+            return View("Create");
         }
 
-        // GET: ElementController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ElementController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(string name, int catid, string data, string image)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            ElementOutModel elementData = new ElementOutModel();
+
+            if (image == null) image = "";
+
+            elementData.Name = name;
+            elementData.CategoryID = catid;
+            elementData.Data = data;
+            elementData.ImageURI = image;
+
+            await elementService.CreateElement(elementData);
+
+            return View("List", await elementService.GetAllElements());
         }
 
-        // GET: ElementController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Read(int id)
         {
-            return View();
+            return View("Read", await elementService.ReadElement(id));
         }
 
-        // POST: ElementController/Edit/5
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            return View("Update", await elementService.ReadElement(id));
+        }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Update(int id, string name, int catid, string data, string image)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            ElementOutModel elementData = new ElementOutModel();
+
+            if (image == null) image = "";
+
+            elementData.ID = id;
+            elementData.Name = name;
+            elementData.CategoryID = catid;
+            elementData.Data = data;
+            elementData.ImageURI = image;
+
+            await elementService.UpdateElement(elementData);
+
+            return View("List", await elementService.GetAllElements());
         }
 
-        // GET: ElementController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete()
         {
-            return View();
+            return View("Delete");
         }
 
-        // POST: ElementController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            await elementService.DeleteElement(id);
+
+            return View("List", await elementService.GetAllElements());
         }
     }
 }

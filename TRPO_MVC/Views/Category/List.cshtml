@@ -1,0 +1,16 @@
+﻿@model List<TRPO_MVC.Models.CategoryModel>
+@{
+    ViewData["Title"] = "Categories List";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Categories List</h1>
+
+    @foreach (var cat in this.Model)
+    {
+        <div>@cat.ID -- @cat.Name: 
+            <a asp-area="" asp-controller="Category" asp-action="Read" asp-route-id="@cat.ID">Read</a> 
+            <a asp-area="" asp-controller="Category" asp-action="Update" asp-route-id="@cat.ID">Update</a>
+        </div>
+    }
+</div>

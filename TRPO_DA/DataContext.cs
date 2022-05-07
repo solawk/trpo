@@ -8,12 +8,10 @@ namespace TRPO_DA
         public DbSet<Element> Elements { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-        public DataContext()
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
-
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -15,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.Add(new ServiceDescriptor(typeof(ElementBL), typeof(ElementBL), ServiceLifetime.Transient));
 builder.Services.Add(new ServiceDescriptor(typeof(ElementDataAccess), typeof(ElementDataAccess), ServiceLifetime.Transient));
+builder.Services.Add(new ServiceDescriptor(typeof(CategoryBL), typeof(CategoryBL), ServiceLifetime.Transient));
+builder.Services.Add(new ServiceDescriptor(typeof(CategoryDataAccess), typeof(CategoryDataAccess), ServiceLifetime.Transient));
 builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();

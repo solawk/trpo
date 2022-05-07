@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TRPO_BL.BusinessLogic;
+using TRPO_DM.ViewModels;
 using TRPO_DM.Models;
+using TRPO_DM.Interfaces;
+using TRPO_API.DataModels;
 
 namespace TRPO_API.Controllers
 {
@@ -16,14 +19,81 @@ namespace TRPO_API.Controllers
             elementBL = bl;
         }
 
-        [HttpGet]
-        public async Task<List<Element>> GetAll()
+        [HttpPut]
+        [Route("")]
+        public async Task<ElementVM> Create(ElementDM element)
         {
-            Debug.WriteLine("Get all invoked");
+            Console.WriteLine("Create invoked");
 
-            List<Element> Elements = await elementBL.Read();
+            ElementVM newElement = await elementBL.Create(element);
 
-            return Elements;
+            return newElement;
+        }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<List<ElementVM>> GetAll()
+        {
+            Console.WriteLine("Get all invoked");
+
+            List<ElementVM> elements = await elementBL.Read();
+
+            return elements;
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<object> GetById(int id)
+        {
+            ElementVM element;
+
+            try
+            {
+                element = await elementBL.Read(id);
+            }
+            catch (Exception)
+            {
+                return StatusCode(400);
+            }
+            
+
+            return element;
+        }
+
+        [HttpPatch]
+        [Route("")]
+        public async Task<object> Update(ElementDM element)
+        {
+            ElementVM updatedElement;
+
+            try
+            {
+                updatedElement = await elementBL.Update(element);
+            }
+            catch (Exception)
+            {
+                return StatusCode(400);
+            }
+
+            return updatedElement;
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<object> Delete(int id)
+        {
+            ElementVM deletedElement;
+
+            try
+            {
+                deletedElement = await elementBL.Delete(id);
+            }
+            catch (Exception)
+            {
+                return StatusCode(400);
+            }
+
+            return deletedElement;
         }
     }
 }

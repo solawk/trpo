@@ -10,7 +10,6 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <ProjectReference Include="..\TRPO_BL\TRPO_BL.csproj" />
-    <ProjectReference Include="..\TRPO_MVC\TRPO_MVC.csproj" />
   </ItemGroup>
 
 </Project>

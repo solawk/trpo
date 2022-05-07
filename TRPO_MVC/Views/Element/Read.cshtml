@@ -1,0 +1,18 @@
+﻿@model TRPO_MVC.Models.ElementModel
+@{
+    ViewData["Title"] = "Read Element";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Read Element @this.Model.Name</h1>
+
+	ID: @this.Model.ID<br />
+	Name: @this.Model.Name<br />
+	Category: @this.Model.Category.ID - @this.Model.Category.Name<br />
+	Data: <br />
+	@foreach (var d in this.Model.ParsedData)
+	{
+		<div>@d.Key -- @d.Value</div>
+	}
+	Image URI: @this.Model.ImageURI<br />
+</div>
