@@ -1,5 +1,6 @@
 ﻿using TRPO_DA.DataAccess;
 using TRPO_DM.Interfaces;
+using TRPO_DM.Models;
 using TRPO_DM.ViewModels;
 
 namespace TRPO_BL.BusinessLogic
@@ -44,6 +45,13 @@ namespace TRPO_BL.BusinessLogic
         public Task<ElementVM> Delete(int id)
         {
             return dataAccess.DeleteAsync(id);
+        }
+
+        // Advanced
+
+        public Task<List<ElementVM>> Search(List<Filter> filters)
+        {
+            return dataAccess.Search(filters);
         }
     }
 }

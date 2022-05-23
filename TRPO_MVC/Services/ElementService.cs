@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using TRPO_DM.Interfaces;
+using TRPO_DM.Models;
 using TRPO_MVC.Models;
 
 namespace TRPO_MVC.Services
@@ -26,7 +27,7 @@ namespace TRPO_MVC.Services
             string receivedContent = await response.Content.ReadAsStringAsync();
 
             var e = JsonSerializer.Deserialize<ElementModel>(receivedContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            parseData(e);
+            parseElementModel(e);
 
             return e;
         }
@@ -40,7 +41,7 @@ namespace TRPO_MVC.Services
             string receivedContent = await response.Content.ReadAsStringAsync();
 
             var e = JsonSerializer.Deserialize<ElementModel>(receivedContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            parseData(e);
+            parseElementModel(e);
 
             return e;
         }
@@ -57,7 +58,7 @@ namespace TRPO_MVC.Services
             string receivedContent = await response.Content.ReadAsStringAsync();
 
             var e = JsonSerializer.Deserialize<ElementModel>(receivedContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            parseData(e);
+            parseElementModel(e);
 
             return e;
         }
@@ -72,7 +73,7 @@ namespace TRPO_MVC.Services
             string receivedContent = await response.Content.ReadAsStringAsync();
 
             var e = JsonSerializer.Deserialize<ElementModel>(receivedContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            parseData(e);
+            parseElementModel(e);
 
             return e;
         }
@@ -89,15 +90,80 @@ namespace TRPO_MVC.Services
 
             foreach (var e in elements)
             {
-                parseData(e);
+                parseElementModel(e);
             }
 
             return elements;
         }
 
-        private void parseData(ElementModel e)
+        public async Task<List<ElementModel>> SearchElements(string? name, int? categoryID, string? data)
         {
-            e.ParsedData = JsonSerializer.Deserialize<Dictionary<string, object>>(e.Data);
+            // Генерация списка фильтров
+            List<Filter> filters = new List<Filter>();
+
+            if (name != null)
+            {
+                filters.Add(new Filter(Filter.FilterType.Name, "", name, Filter.Predicate.Equals));
+                Debug.WriteLine("Searching by name: " + name);
+            }
+
+            if (categoryID != null)
+            {
+                filters.Add(new Filter(Filter.FilterType.Category, "", categoryID, Filter.Predicate.Equals));
+                Debug.WriteLine("Searching by category: " + categoryID);
+            }
+
+            if (data != null)
+            {
+                var dataDictionary = parseFilterData(data);
+
+                foreach (var d in dataDictionary)
+                {
+                    Filter.Predicate predicate = Filter.Predicate.Equals;
+
+                    if (d.Value.predicate < 0) predicate = Filter.Predicate.LesserThen;
+                    else if (d.Value.predicate > 0) predicate = Filter.Predicate.GreaterThan;
+
+                    filters.Add(new Filter(Filter.FilterType.Data, d.Key, d.Value.value, predicate));
+
+                    Debug.WriteLine("Searching by data property: " + d.Key + " ... " + d.Value.value);
+                }
+            }
+
+            // Отправка фильтров
+            string filtersJson = Newtonsoft.Json.JsonConvert.SerializeObject(filters);
+            HttpContent filtersContent = new StringContent(filtersJson, System.Text.Encoding.UTF8, "application/json");
+
+            Debug.WriteLine("Content:");
+            Debug.WriteLine(filtersJson);
+
+            // Получение найденных элементов
+            using HttpResponseMessage response = await httpClient.PostAsync("api/elements/search", filtersContent);
+            response.EnsureSuccessStatusCode();
+            string receivedContent = await response.Content.ReadAsStringAsync();
+            var elements = JsonSerializer.Deserialize<List<ElementModel>>(receivedContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            foreach (var e in elements)
+            {
+                parseElementModel(e);
+            }
+
+            return elements;
+        }
+
+        private void parseElementModel(ElementModel e)
+        {
+            e.ParsedData = parseData(e.Data);
+        }
+
+        private Dictionary<string, object> parseData(string d)
+        {
+            return JsonSerializer.Deserialize<Dictionary<string, object>>(d);
+        }
+
+        private Dictionary<string, FilterDataModel> parseFilterData(string d)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, FilterDataModel>>(d);
         }
     }
 }

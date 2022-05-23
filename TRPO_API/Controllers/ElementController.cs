@@ -95,5 +95,32 @@ namespace TRPO_API.Controllers
 
             return deletedElement;
         }
+
+        // Advanced
+
+        [HttpPost]
+        [Route("search")]
+        public async Task<List<ElementVM>> Search()
+        {
+            string filtersJson;
+
+            using (StreamReader reader = new StreamReader(Request.Body, System.Text.Encoding.UTF8))
+            {
+                filtersJson = await reader.ReadToEndAsync();
+            }
+
+            Console.WriteLine("Received: " + filtersJson);
+
+            List<Filter> filters = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Filter>>(filtersJson);
+
+            foreach (var f in filters)
+            {
+                Console.WriteLine("Searching " + f.type + " " + f.key + " " + f.predicate + " " + f.value);
+            }
+
+            List<ElementVM> elements = await elementBL.Search(filters);
+
+            return elements;
+        }
     }
 }

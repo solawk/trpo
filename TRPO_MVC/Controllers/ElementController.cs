@@ -83,5 +83,19 @@ namespace TRPO_MVC.Controllers
 
             return View("List", await elementService.GetAllElements());
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Search()
+        {
+            return View("Search");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(string? name, int? catid, string? data)
+        {
+            var searchResult = await elementService.SearchElements(name, catid, data);
+
+            return View("List", searchResult);
+        }
     }
 }
