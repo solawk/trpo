@@ -6,8 +6,12 @@ builder.WebHost.UseUrls("https://localhost:7001;http://localhost:7000");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient<ElementService>(client => client.BaseAddress = new Uri("https://localhost:5001"));
-builder.Services.AddHttpClient<CategoryService>(client => client.BaseAddress = new Uri("https://localhost:5001"));
+
+builder.Services.AddHttpClient<ElementService>(client => client.BaseAddress = new Uri("https://localhost:6001"));
+builder.Services.AddHttpClient<CategoryService>(client => client.BaseAddress = new Uri("https://localhost:6001"));
+
+builder.Services.AddHttpClient<ElementService>(client => client.BaseAddress = new Uri("http://localhost:6000"));
+builder.Services.AddHttpClient<CategoryService>(client => client.BaseAddress = new Uri("http://localhost:6000"));
 
 var app = builder.Build();
 

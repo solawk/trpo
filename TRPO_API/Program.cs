@@ -5,6 +5,8 @@ using TRPO_DA.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("https://localhost:6001;http://localhost:6000");
+
 // Add services to the container.
 
 builder.Services.AddControllers();
